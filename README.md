@@ -13,6 +13,8 @@ This is a full-stack MERN book search engine. The app  allows users to search fo
 
 https://github.com/Blair-D/MERN-Library
 
+https://blair-d.github.io/MERN-Library/
+
 
 ## License
 MIT License
