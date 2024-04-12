@@ -1,45 +1,30 @@
-//this whole page of code is new
 import { gql } from '@apollo/client';
 
-export const ADD_USER = gql`
-  mutation addUser($username: String!, $email: String!, $password: String!) {
-    addUser(username: $username, email: $email, password: $password) {
-      token
-      user {
-        _id
-        username
-        savedBooks {
-          bookId
-           authors
-           title
-           description
-           image
-           link
-      }
-    }
-  }
-`;
-
-export const LOGIN_USER = gql`
+export const USER_LOGIN = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
       user {
         _id
         username
-        savedBooks {
-          bookId
-           authors
-           title
-           description
-           image
-           link
       }
     }
   }
 `;
 
-export const SAVE_BOOK = gql`
+export const NEW_USER = gql`
+  mutation addUser($username: String!, $email: String!, $password: String!) {
+    addUser(email: $email, username: $username, password: $password) {
+      token
+      user {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+export const SAVE_BK = gql`
   mutation saveBook($bookData: BookInput!) {
     saveBook(bookData: $bookData) {
       _id
@@ -47,29 +32,29 @@ export const SAVE_BOOK = gql`
       email
       savedBooks {
         bookId
-         authors
-         title
-         description
-         image
-         link
+        title
+        authors
+        description
+        image
+        link
       }
     }
   }
 `;
 
-export const REMOVE_BOOK = gql`
-  mutation delterBook($bookId: ID!) {
-    deleteBook(bookId: $bookId) {
+export const REM_BOOK = gql`
+  mutation removeBook($bookId: ID!) {
+    removeBook(bookId: $bookId) {
       _id
       username
       email
       savedBooks {
-         bookId
-         authors
-         title
-         description
-         image
-         link
+        bookId
+        title
+        authors
+        description
+        image
+        link
       }
     }
   }

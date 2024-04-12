@@ -1,47 +1,46 @@
-//Query and Mutation types are defined
 const typeDefs = `
-    type User {
-        _id: ID
-        username: String
-        email: String
-        bookCount: Int
-        savedBooks: [Book]
+  type Query {
+     me: User
     }
 
-    type Book {
-        bookId: ID
-        authors: [String]
-        title: String
-        description: String
-        image: String
-        link: String
-        
-    }
-    
-    type Auth {
-        token: ID
-        user: User
-      }
+  type User {
+    _id: ID!
+    username: String
+    email: String
+    password: String
+    bookCount: Int
+    savedBooks: [Book]
+  }
 
-    input BookInput {
-        bookId: String
-        authors: [String]
-        title: String
-        description: String
-        image: String
-        link: String
-      }
+  type Auth {
+    token: ID!
+    user: User
+  }
+
+  type Book {
+    bookId: ID!
+    title: String
+    authors: [String]
+    description: String
+    image: String
+    link: String  
+  }
     
-    type Query {
-        me: User
-      }
+  input BookInput {
+    bookId: String!
+    title: String
+    authors: [String]
+    description: String
+    image: String
+    link: String
+  }
     
-    type Mutation {
-        login(email: String!, password: String!): Auth
-        addUser(username: String!, email: String!, password: String!): Auth
-        saveBook(bookData: BookInput!): User
-        removeBook(bookId: ID!): User
-      }
-    `;
+  type Mutation {
+    addUser(email: String!, username: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
+    removeBook(bookId: ID!): User
+    saveBook(bookData: BookInput!): User
+  }
+`;
 
 module.exports = typeDefs;

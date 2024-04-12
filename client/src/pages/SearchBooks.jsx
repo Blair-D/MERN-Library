@@ -1,4 +1,8 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { SAVE_BK } from '../utils/mutations';
+import { saveBkIds, getSavedBookIds } from '../utils/localStorage';
+import Auth from '../utils/auth';
 import {
   Container,
   Col,
@@ -8,10 +12,6 @@ import {
   Row
 } from 'react-bootstrap';
 
-import Auth from '../utils/auth';
-import { SAVE_BOOK } from '../utils/mutations' 
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-import { useMutation } from '@apollo/client' 
 
 
 
@@ -20,16 +20,15 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BK)
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
-    return () => saveBookIds(savedBookIds);
+    return () => saveBkIds(savedBookIds);
   });
 
   // create method to search for books and set state on form submit
@@ -41,14 +40,16 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchedBooks(searchInput);//
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
+        );
 
 
-      if (!response.ok) { 
+      if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      const { items } = await response.json(); 
+      const { items } = await response.json();
 
       const bookData = items.map((book) => ({
         bookId: book.id,
@@ -78,8 +79,8 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await saveBook({ 
-        variables: { bookData: { ...bookToSave }} 
+      const { data } = await saveBook({
+        variables: { bookData: { ...bookToSave }}
       });
 
       // if book successfully saves to user's account, save book id to state

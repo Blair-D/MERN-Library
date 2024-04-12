@@ -1,4 +1,4 @@
-# Book-Search-Engine
+# MERN-Library
 
 ## Table of Contents
 - [Description](#description)
